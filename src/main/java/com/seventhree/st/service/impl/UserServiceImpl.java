@@ -1,51 +1,65 @@
 package com.seventhree.st.service.impl;
 
-import com.seventhree.st.mapper.UserDao;
-import com.seventhree.st.model.UserDomain;
-import com.seventhree.st.service.UserService;
 import com.github.pagehelper.PageHelper;
-//import com.github.pagehelper.PageInfo;
+
+import com.seventhree.st.mapper.UserMapper;
+import com.seventhree.st.model.User;
+import com.seventhree.st.model.UserExample;
+import com.seventhree.st.service.UserService;
 import com.seventhree.st.utils.PageInfo;
+import com.seventhree.st.utils.ResultModel;
+import com.seventhree.st.utils.ResultStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by Administrator on 2017/8/16.
- */
-@Service(value = "userService")
+@Service
+@Transactional
 public class UserServiceImpl implements UserService {
-
-    @Autowired
-    private UserDao userDao;//这里会报错，但是并不会影响
+  
+	@Autowired
+    private UserMapper userMapper;
 
     @Override
-    public int addUser(UserDomain user) {
-
-        return userDao.insert(user);
+    public User selectUserById(int userId) {
+    	return this.userMapper.selectByPrimaryKey(userId);
     }
 
-    /*
-     * 这个方法中用到了我们开头配置依赖的分页插件pagehelper
-     * 很简单，只需要在service层传入参数，然后将参数传递给一个插件的一个静态方法即可；
-     * pageNum 开始页数
-     * pageSize 每页显示的数据条数
-     * */
     @Override
-    public PageInfo<UserDomain> findAllUser(int pageNum, int pageSize) {
-        //将参数传给这个方法就可以实现物理分页了，非常简单。
+    public PageInfo<User> selectAllUsers(User user,int pageNum, int pageSize){
+    	UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        
+        if (null != user.getUserName()) {
+            criteria.andUserNameEqualTo(user.getUserName());
+        }
+        if (null != user.getPhone()) {
+            criteria.andPhoneEqualTo(user.getPhone());
+        }
+        if (null != user.getUserId()) {
+        	criteria.andUserIdEqualTo(user.getUserId());
+        }
+        
+        if (null != user.getReferer()) {
+        	criteria.andRefererEqualTo(user.getReferer());
+        }
+
         PageHelper.startPage(pageNum, pageSize);
-        List<UserDomain> userDomains = userDao.selectUsers();
-        PageInfo result = new PageInfo(userDomains);
+        List<User> users = this.userMapper.selectByExample(userExample);
+
+
+
+        PageInfo result = new PageInfo(users);
         return result;
     }
 
-    @Override
-    public UserDomain selectByPhone(String phone, String password) {
 
-        return  userDao.selectByPhone(phone,password);
-    }
 
 
 }
