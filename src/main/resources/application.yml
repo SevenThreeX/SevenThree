@@ -5,9 +5,11 @@ server:
 spring:
   datasource:
     name: mydata
-    url: jdbc:mysql://127.0.0.1:3306/test?serverTimezone=GMT%2B8&useSSL=false
+#    url: jdbc:mysql://127.0.0.1:3306/test?serverTimezone=GMT%2B8&useSSL=false
+    url: jdbc:mysql://27.102.132.130:3306/test?serverTimezone=GMT%2B8&useSSL=false
     username: root
-    password: root
+#    password: root
+    password: 9b648
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
