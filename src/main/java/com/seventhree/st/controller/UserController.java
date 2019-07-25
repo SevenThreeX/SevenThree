@@ -42,5 +42,24 @@ private UserService userService;
         return new ResponseEntity<>(ResultModel.ok(userPageInfo), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "登录", notes="登录")
+    @ApiImplicitParams({@ApiImplicitParam(name = "phone", value = "账号", paramType = "query"),
+            @ApiImplicitParam(name = "password", value = "密码", paramType = "query")
+    })
+    @RequestMapping(value="/login",method= RequestMethod.POST )
+    public Object login(
+            @RequestParam(name = "phone") String phone,
+            @RequestParam(name = "password") String password){
+
+        User user = userService.selectUserByPhone(phone, password);
+        if (user!=null){
+
+            return new ResponseEntity<>(ResultModel.ok(user), HttpStatus.OK);
+        }
+
+
+        return new ResponseEntity<>(ResultModel.error(user), HttpStatus.NOT_FOUND);
+    }
+
 
 }

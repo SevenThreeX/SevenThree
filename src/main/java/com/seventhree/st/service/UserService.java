@@ -15,6 +15,8 @@ public interface UserService {
 
     //通过条件机进行查询用户列表
     PageInfo<User> selectAllUsers(User user,int pageNum, int pageSize);
+
+    User selectUserByPhone(String phone ,String password);
     
 
 

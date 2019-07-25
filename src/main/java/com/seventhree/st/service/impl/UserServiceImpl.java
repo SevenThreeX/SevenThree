@@ -59,7 +59,18 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
-
+    @Override
+    public User selectUserByPhone(String phone, String password) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andPhoneEqualTo(phone);
+        criteria.andPassWordEqualTo(password);
+        List<User> users = this.userMapper.selectByExample(userExample);
+        if (users.size()>0){
+            return users.get(0);
+        }
+        return null;
+    }
 
 
 }
