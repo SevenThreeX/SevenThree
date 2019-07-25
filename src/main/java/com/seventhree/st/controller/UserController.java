@@ -2,7 +2,9 @@ package com.seventhree.st.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.seventhree.st.model.User;
+import com.seventhree.st.model.commond.UserToken;
 import com.seventhree.st.service.UserService;
+import com.seventhree.st.service.commond.RedisService;
 import com.seventhree.st.utils.PageInfo;
 import com.seventhree.st.utils.ResultModel;
 import io.swagger.annotations.Api;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 @Autowired
 private UserService userService;
+@Autowired
+private RedisService redisService;
 
     @ApiOperation(value = "获取用户列表", notes="获取用户列表")
     @ApiImplicitParams({@ApiImplicitParam(name = "pageNum", value = "分页页码,从1开始", defaultValue = "1", paramType = "query"),
@@ -53,12 +57,21 @@ private UserService userService;
 
         User user = userService.selectUserByPhone(phone, password);
         if (user!=null){
-
-            return new ResponseEntity<>(ResultModel.ok(user), HttpStatus.OK);
+            UserToken token = redisService.createToken(user.getUserId());
+            return new ResponseEntity<>(ResultModel.ok(token), HttpStatus.OK);
         }
-
-
         return new ResponseEntity<>(ResultModel.error(user), HttpStatus.NOT_FOUND);
+    }
+
+    @ApiOperation(value = "获取用户token", notes="获取用户token")
+    @ApiImplicitParams(@ApiImplicitParam(name = "userId", value = "用户ID", paramType = "query")
+    )
+    @RequestMapping(value="/getToken",method= RequestMethod.GET )
+    public Object getToken(
+            @RequestParam(name = "userId", required = false, defaultValue = "1")
+                    int userId){
+        UserToken token = redisService.getToken(userId);
+        return new ResponseEntity<>(ResultModel.ok(token), HttpStatus.OK);
     }
 
 
