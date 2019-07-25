@@ -84,7 +84,6 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
-
         <!-- swagger -->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -112,8 +111,6 @@
 <!--            <artifactId>surefire-junit4</artifactId>-->
 <!--            <version>2.22.2</version>-->
 <!--        </dependency>-->
-
-
 
     </dependencies>
 
