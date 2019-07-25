@@ -28,8 +28,8 @@ spring:
 
   redis:
     database: 0
-#    host: 127.0.0.1
-    host: 27.102.132.130
+    host: 127.0.0.1
+#    host: 27.102.132.130
     port: 6379
     password:
     jedis:

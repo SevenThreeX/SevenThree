@@ -1,5 +1,8 @@
 package com.seventhree.st.service.commond.impl;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.seventhree.st.model.User;
 import com.seventhree.st.model.commond.UserToken;
 import com.seventhree.st.service.commond.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +28,15 @@ public class RedisServiceImpl implements RedisService {
         redis.setKeySerializer(new JdkSerializationRedisSerializer());
     }
     @Override
-    public UserToken createToken(Integer userId) {
-        String token = UUID.randomUUID().toString().replace("-", "");
+    public UserToken createToken(User user) {
+//        String token = UUID.randomUUID().toString().replace("-", "");
+        String token = getToken(user);
         UserToken userToken = new UserToken();
 
-        userToken.setUserId(userId);
+        userToken.setUserId(user.getUserId());
         userToken.setToken(token);
 //        存储到redis并设置过期时间
-        redis.boundValueOps(userId).set(token,72, TimeUnit.HOURS);
+        redis.boundValueOps(user.getUserId()).set(token,72, TimeUnit.HOURS);
         return userToken;
     }
 
@@ -46,5 +50,12 @@ public class RedisServiceImpl implements RedisService {
         userToken.setToken(token);
         }
         return userToken;
+    }
+
+    public String getToken(User user) {
+        String token="";
+        token= JWT.create().withAudience(user.getUserId().toString())
+                .sign(Algorithm.HMAC256(user.getPassWord()));
+        return token;
     }
 }

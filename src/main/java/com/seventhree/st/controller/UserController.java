@@ -1,6 +1,7 @@
 package com.seventhree.st.controller;
 
 import com.github.pagehelper.PageHelper;
+import com.seventhree.st.annotation.CustomAnnotations;
 import com.seventhree.st.model.User;
 import com.seventhree.st.model.commond.UserToken;
 import com.seventhree.st.service.UserService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.seventhree.st.annotation.CustomAnnotations;
 
 @Api(value = "用户接口")
 @RestController
@@ -27,6 +29,7 @@ public class UserController {
 private UserService userService;
 @Autowired
 private RedisService redisService;
+
 
     @ApiOperation(value = "获取用户列表", notes="获取用户列表")
     @ApiImplicitParams({@ApiImplicitParam(name = "pageNum", value = "分页页码,从1开始", defaultValue = "1", paramType = "query"),
@@ -45,7 +48,7 @@ private RedisService redisService;
 
         return new ResponseEntity<>(ResultModel.ok(userPageInfo), HttpStatus.OK);
     }
-
+    @CustomAnnotations.PassToken
     @ApiOperation(value = "登录", notes="登录")
     @ApiImplicitParams({@ApiImplicitParam(name = "phone", value = "账号", paramType = "query"),
             @ApiImplicitParam(name = "password", value = "密码", paramType = "query")
@@ -57,12 +60,13 @@ private RedisService redisService;
 
         User user = userService.selectUserByPhone(phone, password);
         if (user!=null){
-            UserToken token = redisService.createToken(user.getUserId());
+            UserToken token = redisService.createToken(user);
             return new ResponseEntity<>(ResultModel.ok(token), HttpStatus.OK);
         }
         return new ResponseEntity<>(ResultModel.error(user), HttpStatus.NOT_FOUND);
     }
 
+    @CustomAnnotations.UserLoginToken
     @ApiOperation(value = "获取用户token", notes="获取用户token")
     @ApiImplicitParams(@ApiImplicitParam(name = "userId", value = "用户ID", paramType = "query")
     )
