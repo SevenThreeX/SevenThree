@@ -12,6 +12,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,17 +23,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.seventhree.st.annotation.CustomAnnotations;
+
+
 
 @Api(value = "用户接口")
 @RestController
-//@RequestMapping("/user")
 public class UserController {
 @Autowired
 private UserService userService;
 @Autowired
 private RedisService redisService;
-
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @ApiOperation(value = "获取用户列表", notes="获取用户列表")
     @ApiImplicitParams({@ApiImplicitParam(name = "pageNum", value = "分页页码,从1开始", defaultValue = "1", paramType = "query"),
@@ -63,6 +67,8 @@ private RedisService redisService;
             UserToken token = redisService.createToken(user);
             return new ResponseEntity<>(ResultModel.ok(token), HttpStatus.OK);
         }
+
+
         return new ResponseEntity<>(ResultModel.error(user), HttpStatus.NOT_FOUND);
     }
 

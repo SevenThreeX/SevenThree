@@ -1,4 +1,4 @@
-package com.seventhree.st.controller;
+package com.seventhree.st.controller.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
