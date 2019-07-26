@@ -49,8 +49,8 @@ pagehelper:
   returnPageInfo: check
 
 ## 配置日志框架
-#logging:
-#  config: classpath:log4j2-spring.xml
+logging:
+  config: classpath:log4j2-spring.xml
 
 
 

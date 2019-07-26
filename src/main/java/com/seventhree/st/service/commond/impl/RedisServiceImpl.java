@@ -5,7 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.seventhree.st.model.User;
 import com.seventhree.st.model.commond.UserToken;
 import com.seventhree.st.service.commond.RedisService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
