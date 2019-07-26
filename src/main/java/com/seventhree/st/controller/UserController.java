@@ -66,7 +66,7 @@ private RedisService redisService;
         return new ResponseEntity<>(ResultModel.error(user), HttpStatus.NOT_FOUND);
     }
 
-    @CustomAnnotations.UserLoginToken
+    @CustomAnnotations.PassToken
     @ApiOperation(value = "获取用户token", notes="获取用户token")
     @ApiImplicitParams(@ApiImplicitParam(name = "userId", value = "用户ID", paramType = "query")
     )
