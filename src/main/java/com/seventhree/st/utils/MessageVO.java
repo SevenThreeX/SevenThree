@@ -1,5 +1,6 @@
 package com.seventhree.st.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,13 +21,13 @@ public class MessageVO<T> implements Serializable{
 
 
     private static final long serialVersionUID = 7366217171681294440L;
-    private String code;
-    private String msg;
+    private int code;
+    private String message;
     private T data;
 
     private MessageVO(Builder builder) {
         this.code = builder.code;
-        this.msg = builder.msg;
+        this.message = builder.message;
         this.data = (T)builder.data;
     }
 
@@ -55,13 +56,20 @@ public class MessageVO<T> implements Serializable{
 
 
     public static class Builder<T> {
-        private String code;
-        private String msg;
+        private int code;
+        private String message;
         private T data;
 
-        public Builder msgCode(MessageEnums messageEnums) {
-            this.msg = messageEnums.getDesc();
+        public Builder msgCode(ResultStatus messageEnums) {
+            this.message = messageEnums.getMessage();
             this.code = messageEnums.getCode();
+            return this;
+        }
+
+        public Builder msgCodes(JSONObject body) {
+            this.code =body.getInteger("code");
+            this.message =body.getString("message");
+            this.data = (T) body.get("data");
             return this;
         }
 
@@ -84,7 +92,7 @@ public class MessageVO<T> implements Serializable{
     public static void main(String[] args) {
 
         System.err.println(MessageVO.builder("123213")
-                .msgCode(MessageEnums.API_ERROR)
+                .msgCode(ResultStatus.API_ERROR)
                 .build().toString());
     }
 

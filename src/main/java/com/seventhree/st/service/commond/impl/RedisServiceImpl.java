@@ -4,7 +4,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.seventhree.st.model.User;
 import com.seventhree.st.model.commond.UserToken;
+import com.seventhree.st.service.UserService;
 import com.seventhree.st.service.commond.RedisService;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
@@ -18,9 +20,13 @@ public class RedisServiceImpl implements RedisService {
     @Resource
     private RedisTemplate<String, String> redis;
 
+
+
     @Override
     public UserToken createToken(User user) {
-//        String token = UUID.randomUUID().toString().replace("-", "");
+
+
+        //        String token = UUID.randomUUID().toString().replace("-", "");
         String token = getToken(user);
         UserToken userToken = new UserToken();
 
