@@ -66,10 +66,10 @@ private RedisService redisService;
         if (user!=null){
             UserToken token = redisService.createToken(user);
             return new ResponseEntity<>(ResultModel.ok(token), HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(ResultModel.error(user), HttpStatus.NOT_FOUND);
         }
 
-
-        return new ResponseEntity<>(ResultModel.error(user), HttpStatus.NOT_FOUND);
     }
 
     @CustomAnnotations.PassToken
