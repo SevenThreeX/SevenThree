@@ -20,7 +20,7 @@ spring:
       url: jdbc:mysql://192.168.31.12/cbt?serverTimezone=GMT%2B8&useSSL=false&characterEncoding=utf-8
       username: root # 你的数据库账号
       password: root # 你的数据密码
-      driver-class-name: com.mysql.jdbc.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
       type: com.alibaba.druid.pool.DruidDataSource
       # 配置连接池
       druid:
