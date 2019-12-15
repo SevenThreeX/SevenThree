@@ -38,6 +38,8 @@ public enum ResultStatus {
     TOKEN_TIME_OUT(500008, "token超时"),
     TOKEN_NULL_ERROR(500008, "token不能为空"),
 
+    NOT_PERMISSION(100007, "没有操作权限"),
+
     /**
      * 用户是否在线
      */

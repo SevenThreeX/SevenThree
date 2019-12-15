@@ -2,6 +2,7 @@ package com.seventhree.st.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.seventhree.st.annotation.CustomAnnotations;
+import com.seventhree.st.international.utils.International;
 import com.seventhree.st.model.User;
 import com.seventhree.st.model.commond.UserToken;
 import com.seventhree.st.service.UserService;
@@ -24,11 +25,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ResourceBundle;
 
 
 @Api(value = "用户接口")
 @RestController
 public class UserController {
+    @Autowired
+    private HttpServletRequest request;
 @Autowired
 private UserService userService;
 @Autowired
@@ -80,6 +85,11 @@ private RedisService redisService;
     public Object getToken(
             @RequestParam(name = "userId", required = false, defaultValue = "1")
                     int userId){
+
+        ResourceBundle myResourcesBundle = International.getLanguage(request);
+        if (false) {
+            return new ResponseEntity<>(ResultModel.error(myResourcesBundle, "userNotFound"), HttpStatus.OK);
+        }
         UserToken token = redisService.getToken(userId);
         return new ResponseEntity<>(ResultModel.ok(token), HttpStatus.OK);
     }
